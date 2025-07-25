@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { useTodo } from './TodoContext';
-import TodoList from './TodoList';
 import Task from './Task';
 import SearchBar from './SearchBar';
+import TodoItems from './TodoItems';
 
 const MainContent = () => {
   const { actions, searchTerm } = useTodo();
@@ -26,10 +26,9 @@ const MainContent = () => {
       <div className='mb-8 text-white'>
         <h1 className='text-xl font-bold'>Today main focus</h1>
         <h2 className='text-2xl font-extrabold'>
-          {isSearching 
+          {isSearching
             ? `Search Results (${filteredTasks.length})`
-            : activeList?.name || 'No List Selected'
-          }
+            : activeList?.name || 'No List Selected'}
         </h2>
       </div>
 
@@ -69,12 +68,16 @@ const MainContent = () => {
             </div>
           ) : (
             filteredTasks.map((task) => (
-              <Task key={`${task.listId}-${task.id}`} task={task} showListName={true} />
+              <Task
+                key={`${task.listId}-${task.id}`}
+                task={task}
+                showListName={true}
+              />
             ))
           )}
         </div>
       ) : (
-        <TodoList list={activeList} />
+        <TodoItems list={activeList} />
       )}
     </div>
   );

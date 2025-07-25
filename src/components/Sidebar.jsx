@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Settings, Filter, Plus, Menu, X } from 'lucide-react';
 import { useTodo } from './TodoContext';
-import TodoList from './TodoList';
+import TodoItems from './TodoItems';
 
 const Sidebar = () => {
   const { todoLists, categories, actions } = useTodo();
@@ -24,7 +24,7 @@ const Sidebar = () => {
   const MobileSidebarContent = () => (
     <>
       {/* Mobile Header */}
-      <div className='flex items-center gap-2 mb-4'>
+      <div className='flex items-center gap-2 mb-4 z-100'>
         <div className='w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0'>
           <img
             src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&h=48&fit=crop&crop=face'
@@ -41,7 +41,9 @@ const Sidebar = () => {
         </div>
         <div className='min-w-0 flex-1'>
           <p className='font-semibold text-gray-800 text-sm truncate'>Do-it</p>
-          <p className='text-gray-400 text-sm font-medium truncate'>Hamza mameri</p>
+          <p className='text-gray-400 text-sm font-medium truncate'>
+            Hamza mameri
+          </p>
         </div>
         <button
           onClick={closeMobileMenu}
@@ -63,8 +65,8 @@ const Sidebar = () => {
                 <Calendar className='w-4 h-4 flex-shrink-0' />
                 <span className='font-medium text-sm'>Todo Lists</span>
               </div>
-              <Plus 
-                className='w-4 h-4 cursor-pointer hover:text-purple-600 flex-shrink-0' 
+              <Plus
+                className='w-4 h-4 cursor-pointer hover:text-purple-600 flex-shrink-0'
                 onClick={() => setIsAddingList(true)}
               />
             </div>
@@ -105,7 +107,7 @@ const Sidebar = () => {
             <div className='space-y-1 mb-4'>
               {todoLists.map((list) => (
                 <div key={list.id} onClick={closeMobileMenu}>
-                  <TodoList list={list} isDroppable={true} />
+                  <TodoItems list={list} isDroppable={true} />
                 </div>
               ))}
             </div>
@@ -113,7 +115,9 @@ const Sidebar = () => {
 
           {/* Categories */}
           <div className='space-y-1 mb-4'>
-            <div className='text-xs text-gray-500 font-medium px-3 mb-2'>CATEGORIES</div>
+            <div className='text-xs text-gray-500 font-medium px-3 mb-2'>
+              CATEGORIES
+            </div>
             {categories.map((category) => (
               <div
                 key={category.id}
@@ -124,7 +128,9 @@ const Sidebar = () => {
                   className='w-3 h-3 rounded-full flex-shrink-0'
                   style={{ backgroundColor: category.color }}
                 ></div>
-                <span className='text-gray-700 flex-1 text-sm truncate'>{category.name}</span>
+                <span className='text-gray-700 flex-1 text-sm truncate'>
+                  {category.name}
+                </span>
               </div>
             ))}
 
@@ -136,7 +142,10 @@ const Sidebar = () => {
 
           {/* Scheduled Tasks */}
           <div className='mb-2'>
-            <div className='flex items-center gap-2 py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors' onClick={closeMobileMenu}>
+            <div
+              className='flex items-center gap-2 py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors'
+              onClick={closeMobileMenu}
+            >
               <Calendar className='w-4 h-4 flex-shrink-0' />
               <span className='font-medium text-sm'>Scheduled tasks</span>
             </div>
@@ -144,7 +153,10 @@ const Sidebar = () => {
 
           {/* Settings */}
           <div>
-            <div className='flex items-center gap-2 py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors' onClick={closeMobileMenu}>
+            <div
+              className='flex items-center gap-2 py-2 px-3 text-gray-700 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors'
+              onClick={closeMobileMenu}
+            >
               <Settings className='w-4 h-4 flex-shrink-0' />
               <span className='font-medium text-sm'>Settings</span>
             </div>
@@ -164,7 +176,8 @@ const Sidebar = () => {
         <Menu className='w-5 h-5 text-gray-600' />
       </button>
 
-      <div className='hidden lg:block w-72 h-full p-6 bg-white border-r border-gray-100 relative'>
+      <div className='hidden lg:block w-72 h-full p-6 bg-white border-r border-gray-100 relative rounded-l-lg'>
+        <div className='absolute z-30 left-[50%] translate-x-[-50%] lg:left-[280px] -top-12 lg:translate-x-0 w-24 h-24 sm:w-24 sm:h-w-24 bg-cyan-400 rounded-full md:block hidden' />
         <div className='flex items-center gap-3 mb-8'>
           <div className='w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden'>
             <img
@@ -196,8 +209,8 @@ const Sidebar = () => {
             <div className=''>
               <div className='flex items-center justify-between py-3 px-3 text-gray-700'>
                 <span className='font-medium'>Todo Lists</span>
-                <Plus 
-                  className='w-4 h-4 cursor-pointer hover:text-purple-600' 
+                <Plus
+                  className='w-4 h-4 cursor-pointer hover:text-purple-600'
                   onClick={() => setIsAddingList(true)}
                 />
               </div>
@@ -238,13 +251,15 @@ const Sidebar = () => {
             {/* Todo Lists */}
             <div className='space-y-1 mb-6'>
               {todoLists.map((list) => (
-                <TodoList key={list.id} list={list} isDroppable={true} />
+                <TodoItems key={list.id} list={list} isDroppable={true} />
               ))}
             </div>
 
             {/* Categories */}
             <div className='space-y-1 mb-6'>
-              <div className='text-xs text-gray-500 font-medium px-3 mb-2'>CATEGORIES</div>
+              <div className='text-xs text-gray-500 font-medium px-3 mb-2'>
+                CATEGORIES
+              </div>
               {categories.map((category) => (
                 <div
                   key={category.id}
@@ -287,11 +302,11 @@ const Sidebar = () => {
       {isMobileMenuOpen && (
         <div className='lg:hidden fixed inset-0 z-40 flex'>
           {/* Backdrop */}
-          <div 
+          <div
             className='fixed inset-0 bg-black bg-opacity-50'
             onClick={closeMobileMenu}
           ></div>
-          
+
           {/* Mobile Sidebar */}
           <div className='relative w-80 max-w-[85vw] h-full p-4 bg-white shadow-xl flex flex-col'>
             <MobileSidebarContent />
