@@ -33,7 +33,7 @@ const TodoItems = ({ list, isDroppable = false }) => {
   if (isDroppable) {
     return (
       <div
-        className={`group flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-2 sm:px-3 rounded-lg hover:bg-gray-50 cursor-pointer relative transition-all ${
+        className={`group flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-2 sm:px-3 rounded-lg hover:bg-gray-50 cursor-pointer relative transition-all w-52 ${
           activeListId === list.id
             ? 'bg-purple-50 border-l-2 sm:border-l-4 border-purple-500'
             : ''

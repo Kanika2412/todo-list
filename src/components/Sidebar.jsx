@@ -201,7 +201,7 @@ const Sidebar = () => {
         <div className='border-b-2 border-gray-200 w-[80%] mx-auto'></div>
 
         {/* Todo Lists Section */}
-        <div className='flex gap-8 justify-items-center pt-4'>
+        <div className='flex justify-items-center pt-4'>
           <div className='flex py-3 px-3 text-gray-700'>
             <Calendar className='w-4 h-4' />
           </div>
@@ -283,7 +283,7 @@ const Sidebar = () => {
 
         {/* Scheduled Tasks */}
         <div className='mb-'>
-          <div className='flex items-center gap-10 py-3 px-3 text-gray-700'>
+          <div className='flex items-center gap-2 py-3 px-3 text-gray-700'>
             <Calendar className='w-4 h-4' />
             <span className='font-medium pl-3'>Scheduled tasks</span>
           </div>
@@ -291,7 +291,7 @@ const Sidebar = () => {
 
         {/* Settings */}
         <div className=''>
-          <div className='flex items-center gap-10 py-3 px-3 text-gray-700'>
+          <div className='flex items-center gap-2 py-3 px-3 text-gray-700'>
             <Settings className='w-4 h-4' />
             <span className='font-medium pl-3'>Settings</span>
           </div>
