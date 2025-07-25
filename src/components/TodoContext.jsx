@@ -1,4 +1,3 @@
-
 import { useState, createContext, useContext, useEffect } from 'react';
 
 const TodoContext = createContext();
@@ -65,15 +64,15 @@ const defaultData = {
           time: '10:30 pm',
           category: 'personal',
         },
-      ]
-    }
+      ],
+    },
   ],
   activeListId: 'list-1',
   categories: [
     { id: 'personal', name: 'Personal', color: '#FF6B9D' },
     { id: 'freelance', name: 'Freelance', color: '#4ECDC4' },
     { id: 'work', name: 'Work', color: '#FFD93D' },
-  ]
+  ],
 };
 
 export const TodoProvider = ({ children }) => {
@@ -81,7 +80,7 @@ export const TodoProvider = ({ children }) => {
     const storedData = loadFromLocalStorage();
     return storedData || defaultData;
   });
-  
+
   const [activeId, setActiveId] = useState(null);
   const [overId, setOverId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -95,49 +94,52 @@ export const TodoProvider = ({ children }) => {
       const newList = {
         id: `list-${Date.now()}`,
         name: name.trim(),
-        tasks: []
+        tasks: [],
       };
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: [...prev.todoLists, newList],
-        activeListId: newList.id
+        todoLists: [newList, ...prev.todoLists],
+        activeListId: newList.id,
       }));
     },
 
     deleteList: (listId) => {
-      setState(prev => {
+      setState((prev) => {
         if (prev.todoLists.length <= 1) return prev;
-        
-        const updatedLists = prev.todoLists.filter(list => list.id !== listId);
-        const newActiveId = prev.activeListId === listId 
-          ? updatedLists[0]?.id || prev.activeListId
-          : prev.activeListId;
+
+        const updatedLists = prev.todoLists.filter(
+          (list) => list.id !== listId
+        );
+        const newActiveId =
+          prev.activeListId === listId
+            ? updatedLists[0]?.id || prev.activeListId
+            : prev.activeListId;
 
         return {
           ...prev,
           todoLists: updatedLists,
-          activeListId: newActiveId
+          activeListId: newActiveId,
         };
       });
     },
 
     updateListName: (listId, newName) => {
       if (!newName.trim()) return;
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list =>
+        todoLists: prev.todoLists.map((list) =>
           list.id === listId ? { ...list, name: newName.trim() } : list
-        )
+        ),
       }));
     },
 
     setActiveList: (listId) => {
-      setState(prev => ({ ...prev, activeListId: listId }));
+      setState((prev) => ({ ...prev, activeListId: listId }));
     },
 
     addTask: (text, category = 'personal') => {
       if (!text.trim()) return;
-      
+
       const newTask = {
         id: Date.now().toString(),
         text: text.trim(),
@@ -149,82 +151,84 @@ export const TodoProvider = ({ children }) => {
         category,
       };
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list =>
+        todoLists: prev.todoLists.map((list) =>
           list.id === prev.activeListId
-            ? { ...list, tasks: [...list.tasks, newTask] }
+            ? { ...list, tasks: [newTask, ...list.tasks] }
             : list
-        )
+        ),
       }));
     },
 
     toggleTask: (taskId) => {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list => ({
+        todoLists: prev.todoLists.map((list) => ({
           ...list,
-          tasks: list.tasks.map(task =>
+          tasks: list.tasks.map((task) =>
             task.id === taskId ? { ...task, completed: !task.completed } : task
-          )
-        }))
+          ),
+        })),
       }));
     },
 
     updateTask: (taskId, updates) => {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list => ({
+        todoLists: prev.todoLists.map((list) => ({
           ...list,
-          tasks: list.tasks.map(task =>
+          tasks: list.tasks.map((task) =>
             task.id === taskId ? { ...task, ...updates } : task
-          )
-        }))
+          ),
+        })),
       }));
     },
 
     deleteTask: (taskId) => {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list => ({
+        todoLists: prev.todoLists.map((list) => ({
           ...list,
-          tasks: list.tasks.filter(task => task.id !== taskId)
-        }))
+          tasks: list.tasks.filter((task) => task.id !== taskId),
+        })),
       }));
     },
 
     moveTaskBetweenLists: (taskId, sourceListId, targetListId) => {
-      setState(prev => {
-        const sourceList = prev.todoLists.find(list => list.id === sourceListId);
-        const taskToMove = sourceList?.tasks.find(task => task.id === taskId);
-        
+      setState((prev) => {
+        const sourceList = prev.todoLists.find(
+          (list) => list.id === sourceListId
+        );
+        const taskToMove = sourceList?.tasks.find((task) => task.id === taskId);
+
         if (!taskToMove) return prev;
 
         return {
           ...prev,
-          todoLists: prev.todoLists.map(list => {
+          todoLists: prev.todoLists.map((list) => {
             if (list.id === sourceListId) {
               return {
                 ...list,
-                tasks: list.tasks.filter(task => task.id !== taskId)
+                tasks: list.tasks.filter((task) => task.id !== taskId),
               };
             }
             if (list.id === targetListId) {
               return {
                 ...list,
-                tasks: [...list.tasks, taskToMove]
+                tasks: [...list.tasks, taskToMove],
               };
             }
             return list;
-          })
+          }),
         };
       });
     },
 
     reorderTasksInList: (listId, oldIndex, newIndex) => {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        todoLists: prev.todoLists.map(list => {
+        todoLists: prev.todoLists.map((list) => {
           if (list.id === listId) {
             const newTasks = [...list.tasks];
             const [reorderedItem] = newTasks.splice(oldIndex, 1);
@@ -232,7 +236,7 @@ export const TodoProvider = ({ children }) => {
             return { ...list, tasks: newTasks };
           }
           return list;
-        })
+        }),
       }));
     },
 
@@ -242,46 +246,51 @@ export const TodoProvider = ({ children }) => {
 
     getFilteredTasks: () => {
       if (!searchTerm.trim()) {
-        const activeList = state.todoLists.find(list => list.id === state.activeListId);
+        const activeList = state.todoLists.find(
+          (list) => list.id === state.activeListId
+        );
         return activeList ? activeList.tasks : [];
       }
 
       const allTasks = [];
       const searchLower = searchTerm.toLowerCase();
-      
-      state.todoLists.forEach(list => {
-        list.tasks.forEach(task => {
+
+      state.todoLists.forEach((list) => {
+        list.tasks.forEach((task) => {
           if (task.text.toLowerCase().includes(searchLower)) {
             allTasks.push({
               ...task,
               listName: list.name,
-              listId: list.id
+              listId: list.id,
             });
           }
         });
       });
-      
+
       return allTasks;
     },
 
     findTaskById: (taskId) => {
       for (const list of state.todoLists) {
-        const task = list.tasks.find(task => task.id === taskId);
+        const task = list.tasks.find((task) => task.id === taskId);
         if (task) return { task, listId: list.id };
       }
       return null;
     },
 
     getListById: (listId) => {
-      return state.todoLists.find(list => list.id === listId);
+      return state.todoLists.find((list) => list.id === listId);
     },
 
     getActiveList: () => {
-      return state.todoLists.find(list => list.id === state.activeListId) || state.todoLists[0];
+      return (
+        state.todoLists.find((list) => list.id === state.activeListId) ||
+        state.todoLists[0]
+      );
     },
 
     getCategoryColor: (categoryId) => {
-      const category = state.categories.find(c => c.id === categoryId);
+      const category = state.categories.find((c) => c.id === categoryId);
       return category ? category.color : '#FF6B9D';
     },
 
@@ -297,7 +306,11 @@ export const TodoProvider = ({ children }) => {
     importData: (jsonData) => {
       try {
         const importedData = JSON.parse(jsonData);
-        if (importedData.todoLists && importedData.categories && importedData.activeListId) {
+        if (
+          importedData.todoLists &&
+          importedData.categories &&
+          importedData.activeListId
+        ) {
           setState(importedData);
           return { success: true, message: 'Data imported successfully' };
         } else {
@@ -306,7 +319,7 @@ export const TodoProvider = ({ children }) => {
       } catch (error) {
         return { success: false, message: 'Failed to parse JSON data' };
       }
-    }
+    },
   };
 
   const contextValue = {
@@ -317,12 +330,10 @@ export const TodoProvider = ({ children }) => {
     overId,
     setOverId,
     searchTerm,
-    setSearchTerm: actions.setSearchTerm
+    setSearchTerm: actions.setSearchTerm,
   };
 
   return (
-    <TodoContext.Provider value={contextValue}>
-      {children}
-    </TodoContext.Provider>
+    <TodoContext.Provider value={contextValue}>{children}</TodoContext.Provider>
   );
 };
